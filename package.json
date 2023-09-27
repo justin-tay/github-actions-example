@@ -1,0 +1,105 @@
+{
+  "name": "github-actions-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsup ./src",
+    "test": "jest",
+    "coverage": "jest --coverage --silent",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justin-tay/github-actions-example.git"
+  },
+  "author": "Justin Tay",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/justin-tay/github-actions-example/issues"
+  },
+  "homepage": "https://github.com/justin-tay/github-actions-example#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.5",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "ts-jest": "^29.1.1",
+    "tsup": "^7.2.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "browser": true
+    },
+    "extends": [
+      "airbnb-base",
+      "airbnb-typescript/base",
+      "plugin:prettier/recommended"
+    ],
+    "ignorePatterns": [
+      "dist",
+      "example"
+    ],
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "rules": {
+      "complexity": [
+        "warn",
+        20
+      ],
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          "devDependencies": [
+            "tsup.config.ts",
+            "**/*.test.ts",
+            "**/*.test.tsx"
+          ]
+        }
+      ],
+      "no-console": "off"
+    }
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "**/*.{ts,tsx,js}",
+      "!**/node_modules/**",
+      "!**/index.{ts,tsx,js}"
+    ],
+    "coverageReporters": [
+      "clover",
+      "json",
+      "lcov",
+      "text",
+      "cobertura"
+    ],
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.+(ts|tsx|js)",
+      "**/?(*.)+(spec|test).+(ts|tsx|js)"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "quoteProps": "as-needed",
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "arrowParens": "always",
+    "requirePragma": false,
+    "insertPragma": false,
+    "proseWrap": "preserve",
+    "htmlWhitespaceSensitivity": "css",
+    "vueIndentScriptAndStyle": false
+  }
+}
