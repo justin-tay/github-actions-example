@@ -47,7 +47,7 @@ jobs:
       - lint
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
 
     steps:
       - uses: actions/checkout@v4
@@ -67,10 +67,10 @@ jobs:
 
       - name: Run tests
         run: |
-          npm run test -- --ci --color --runInBand --coverage --reporters=default --reporters=jest-junit
+          npm run coverage:ci
 
-      - name: Archive reports
-        uses: actions/upload-artifact@v3
+      - name: Coverage
+        uses: MishaKav/jest-coverage-comment@main
         with:
-          name: junit
-          path: junit.xml
+          coverage-path: ./coverage.txt
+          junitxml-path: ./junit.xml
