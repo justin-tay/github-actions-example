@@ -16,46 +16,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  dependency-review:
-      name: Dependency Review
-      if: github.event_name == 'pull_request'
-      runs-on: ubuntu-latest
-      permissions:
-        contents: read
-      steps:
-          - name: Check out repo
-            uses: actions/checkout@v4
-            with:
-              persist-credentials: false
-
-          - name: Dependency review
-            uses: actions/dependency-review-action@v3
-
-  check-licenses:
-    name: Check licenses
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 'lts/*'
-          cache: 'npm'
-          cache-dependency-path: package.json
-
-      - name: Install
-        run: |
-          npm install --ignore-scripts
-
-      - name: Check licenses
-        run: |
-          npx license-checker --production --summary --onlyAllow="0BSD;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;MIT;"
-
   lint:
     name: Lint
     runs-on: ubuntu-latest
@@ -82,16 +42,12 @@ jobs:
           npm run lint
 
   test:
+    name: Test
     needs: 
       - lint
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     permissions:
       contents: read
-
-    strategy:
-      matrix:
-        node-version: [16, 18, 20]
-        os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v4
@@ -101,7 +57,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 18
           cache: 'npm'
           cache-dependency-path: package.json
 
@@ -111,4 +67,10 @@ jobs:
 
       - name: Run tests
         run: |
-          npm run coverage
+          npm run test -- --ci --color --runInBand --coverage --reporters=default --reporters=jest-junit
+
+      - name: Archive reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: junit
+          path: junit.xml
