@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsup ./src",
+    "build:prod": "tsup ./src",
     "test": "jest",
     "coverage": "jest --coverage --silent",
     "coverage:ci": "jest --coverage --silent --ci --colors --runInBand --coverageReporters json-summary --coverageReporters text --reporters=default --reporters=jest-junit | tee ./coverage.txt",
